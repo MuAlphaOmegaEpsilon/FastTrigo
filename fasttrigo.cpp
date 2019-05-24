@@ -32,7 +32,7 @@ namespace FT
 
     __m128 atan_ps(__m128 x);
     __m128 cos_32s_ps(__m128 x);
-};
+}
 
 float FT::sqrt(float squared)
 {
@@ -306,7 +306,7 @@ namespace FTA
 
     __m128 atan_ps(__m128 x);
     __m128 cos_52s_ps(__m128 x);
-};
+}
 
 float FTA::sqrt(float squared)
 {

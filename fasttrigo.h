@@ -94,7 +94,7 @@ namespace FT
     QVector3D cartesian2spherical(QVector3D vector);
     QVector3D spherical2cartesian(QVector3D vector);
 #endif
-};
+}
 
 //More accurate
 namespace FTA
@@ -133,6 +133,6 @@ namespace FTA
     QVector3D cartesian2spherical(QVector3D vector);
     QVector3D spherical2cartesian(QVector3D vector);
 #endif
-};
+}
 
 #endif // FASTTRIGO_H
