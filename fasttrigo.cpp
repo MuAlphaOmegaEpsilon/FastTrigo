@@ -52,7 +52,7 @@ float FT::length(float x, float y, float z)
 
 float FT::atan(float x)
 {
-    return quarterpi*x - x*(fabs(x) - 1)*(0.2447f + 0.0663f*fabs(x));
+    return quarterpi*x - x*(fabs(x) - 1.0f)*(0.2447f + 0.0663f*fabs(x));
 }
 float FT::atan2(float y, float x)
 {
