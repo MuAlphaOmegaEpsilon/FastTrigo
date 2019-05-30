@@ -5,7 +5,6 @@
   Each namespace (FT, FTA) has 3 sets of functions:
   Scalar: standard trigonometric functions
   Packed Scalar: same functions computing 4 values at the same time (using SSE/SSE2/SSE3/SSE4.1 if available)
-  Qt: convenience functions if using QVector2D/QVector3D classes from Qt
 
   FT Accuracy:
   FT::sqrt/sqrt_ps max error: 0.032% (average error: 0.0094%)
@@ -46,16 +45,11 @@
 #define FASTTRIGO_H
 
 #include <math.h>
-#ifdef QT_GUI_LIB
-#include <QtGui>
-#endif
 #ifdef _MSC_VER
 #include <intrin.h> 
 #else
 #include <x86intrin.h> 
 #endif
-#include <xmmintrin.h>
-#include <pmmintrin.h>
 
 //Default accuracy
 namespace FT
@@ -67,33 +61,6 @@ namespace FT
     float cos(float angle);
     float sin(float angle);
     void  sincos(float angle, float *sin, float *cos);
-
-    __m128 sqrt_ps(__m128 squared);
-    __m128 length_ps(__m128 x, __m128 y);
-    __m128 length_ps(__m128 x, __m128 y, __m128 z);
-    __m128 atan2_ps(__m128 y, __m128 x);
-    __m128 cos_ps(__m128 angle);
-    __m128 sin_ps(__m128 angle);
-    void   sincos_ps(__m128 angle, __m128 *sin, __m128 *cos);
-    void   interleave_ps(__m128 x0x1x2x3, __m128 y0y1y2y3, __m128 *x0y0x1y1, __m128 *x2y2x3y3);
-    void   deinterleave_ps(__m128 x0y0x1y1, __m128 x2y2x3y3, __m128 *x0x1x2x3, __m128 *y0y1y2y3);
-
-#ifdef QT_GUI_LIB
-    float length(QVector2D vector); //cartesian vector(x,y)
-    float length(QVector3D vector); //cartesian vector(x,y,z)
-    float angle(QVector2D vector); //cartesian vector(x,y)
-    float azimuth(QVector3D vector); //cartesian vector(x,y,z)
-    float inclination(QVector3D vector); //cartesian vector(x,y,z)
-    float x(QVector2D vector); //polar vector(length,angle)
-    float y(QVector2D vector); //polar vector(length,angle)
-    float x(QVector3D vector); //spherical vector(length,azimuth,inclination)
-    float y(QVector3D vector); //spherical vector(length,azimuth,inclination)
-    float z(QVector3D vector); //spherical vector(length,azimuth,inclination)
-    QVector2D cartesian2polar(QVector2D vector);
-    QVector2D polar2cartesian(QVector2D vector);
-    QVector3D cartesian2spherical(QVector3D vector);
-    QVector3D spherical2cartesian(QVector3D vector);
-#endif
 }
 
 //More accurate
@@ -106,7 +73,15 @@ namespace FTA
     float cos(float angle);
     float sin(float angle);
     void  sincos(float angle, float *sin, float *cos);
+}
 
+#ifdef FASTTRIGO_PS
+#include <xmmintrin.h>
+#include <pmmintrin.h>
+
+//Default accuracy
+namespace FT
+{
     __m128 sqrt_ps(__m128 squared);
     __m128 length_ps(__m128 x, __m128 y);
     __m128 length_ps(__m128 x, __m128 y, __m128 z);
@@ -116,23 +91,20 @@ namespace FTA
     void   sincos_ps(__m128 angle, __m128 *sin, __m128 *cos);
     void   interleave_ps(__m128 x0x1x2x3, __m128 y0y1y2y3, __m128 *x0y0x1y1, __m128 *x2y2x3y3);
     void   deinterleave_ps(__m128 x0y0x1y1, __m128 x2y2x3y3, __m128 *x0x1x2x3, __m128 *y0y1y2y3);
-
-#ifdef QT_GUI_LIB
-    float length(QVector2D vector); //cartesian vector(x,y)
-    float length(QVector3D vector); //cartesian vector(x,y,z)
-    float angle(QVector2D vector); //cartesian vector(x,y)
-    float azimuth(QVector3D vector); //cartesian vector(x,y,z)
-    float inclination(QVector3D vector); //cartesian vector(x,y,z)
-    float x(QVector2D vector); //polar vector(length,angle)
-    float y(QVector2D vector); //polar vector(length,angle)
-    float x(QVector3D vector); //spherical vector(length,azimuth,inclination)
-    float y(QVector3D vector); //spherical vector(length,azimuth,inclination)
-    float z(QVector3D vector); //spherical vector(length,azimuth,inclination)
-    QVector2D cartesian2polar(QVector2D vector);
-    QVector2D polar2cartesian(QVector2D vector);
-    QVector3D cartesian2spherical(QVector3D vector);
-    QVector3D spherical2cartesian(QVector3D vector);
-#endif
 }
 
+//More accurate
+namespace FTA
+{
+    __m128 sqrt_ps(__m128 squared);
+    __m128 length_ps(__m128 x, __m128 y);
+    __m128 length_ps(__m128 x, __m128 y, __m128 z);
+    __m128 atan2_ps(__m128 y, __m128 x);
+    __m128 cos_ps(__m128 angle);
+    __m128 sin_ps(__m128 angle);
+    void   sincos_ps(__m128 angle, __m128 *sin, __m128 *cos);
+    void   interleave_ps(__m128 x0x1x2x3, __m128 y0y1y2y3, __m128 *x0y0x1y1, __m128 *x2y2x3y3);
+    void   deinterleave_ps(__m128 x0y0x1y1, __m128 x2y2x3y3, __m128 *x0x1x2x3, __m128 *y0y1y2y3);
+}
+#endif
 #endif // FASTTRIGO_H
